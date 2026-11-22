@@ -1,7 +1,7 @@
 # Batalha dos Algoritmos de Ordenacao
 
-Projeto Java para comparar o Quick Sort (Ester), o Insertion Sort (Matheus) e novos
-algoritmos implementados pelo grupo.
+Projeto Java para comparar o Quick Sort (Ester), o Insertion Sort e o Selection Sort
+(Matheus), o Bubble Sort e o Merge Sort (Gabriel).
 
 ## Estrutura
 
@@ -12,11 +12,17 @@ src/
     algoritmos/
       SortingAlgorithm.java
       InsertionSort.java
+      SelectionSort.java
       QuickSort.java
+      MergeSort.java
+      BubbleSort.java
 test/
   br/com/batalha/algoritmos/
     InsertionSortTest.java
+    SelectionSortTest.java
     QuickSortTest.java
+    MergeSortTest.java
+    BubbleSortTest.java
 resultados/
 ```
 
@@ -39,7 +45,10 @@ javac -encoding UTF-8 -cp build -d build\test (Get-ChildItem -Recurse -Filter *.
 
 ```powershell
 java -ea -cp "build;build\test" br.com.batalha.algoritmos.InsertionSortTest
+java -ea -cp "build;build\test" br.com.batalha.algoritmos.SelectionSortTest
 java -ea -cp "build;build\test" br.com.batalha.algoritmos.QuickSortTest
+java -ea -cp "build;build\test" br.com.batalha.algoritmos.MergeSortTest
+java -ea -cp "build;build\test" br.com.batalha.algoritmos.BubbleSortTest
 ```
 
 ## Executar o experimento
@@ -65,6 +74,7 @@ Cada algoritmo pode ser usado individualmente instanciando sua classe e chamando
 - Inversamente ordenados: valores decrescentes.
 - Tamanhos: 10, 100, 1.000, 5.000, 10.000, 50.000 e 100.000.
 - O Insertion Sort para em 50.000, conforme a limitacao recomendada.
+- O Selection Sort e o Bubble Sort param em 10.000, por terem custo quadratico.
 
 ## Adicionar um novo algoritmo
 

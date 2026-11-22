@@ -1,7 +1,10 @@
 package br.com.batalha;
 
 import br.com.batalha.algoritmos.InsertionSort;
+import br.com.batalha.algoritmos.MergeSort;
+import br.com.batalha.algoritmos.BubbleSort;
 import br.com.batalha.algoritmos.QuickSort;
+import br.com.batalha.algoritmos.SelectionSort;
 import br.com.batalha.algoritmos.SortingAlgorithm;
 
 import java.io.IOException;
@@ -25,6 +28,9 @@ public class Main {
         List<SortingAlgorithm> algorithms = new ArrayList<>();
         algorithms.add(new InsertionSort());
         algorithms.add(new QuickSort());
+        algorithms.add(new MergeSort());
+        algorithms.add(new BubbleSort());
+        algorithms.add(new SelectionSort());
 
         // Para adicionar outro integrante, instancie e adicione aqui.
         // algorithms.add(new SelectionSort());
@@ -43,11 +49,29 @@ public class Main {
                     + "comparacoes_media,trocas_ou_movimentos_media,"
                     + "tempo_minimo_ms,tempo_maximo_ms,ordenado\n");
 
+            // Exibe uma tabela organizada no terminal sem alterar o arquivo CSV.
+            System.out.println();
+            System.out.println("==============================================================================================");
+            System.out.println("                         RESULTADOS - BATALHA DOS ALGORITMOS");
+            System.out.println("==============================================================================================");
+            System.out.printf("%-16s | %-10s | %10s | %14s | %16s | %18s | %10s%n",
+                    "ALGORITMO", "ENTRADA", "ELEMENTOS", "TEMPO MEDIO (ms)",
+                    "COMPARACOES", "TROCAS/MOVIMENTOS", "ORDENADO");
+            System.out.println("------------------+------------+------------+----------------+------------------+--------------------+----------");
+
             // Executa todos os algoritmos, tamanhos e formatos de entrada.
             for (SortingAlgorithm algorithm : algorithms) {
                 for (int size : SIZES) {
                     // Evita execucoes excessivamente demoradas do Insertion Sort.
                     if (algorithm instanceof InsertionSort && size > 50_000) {
+                        continue;
+                    }
+                    // Evita execucoes excessivamente demoradas do Bubble Sort.
+                    if (algorithm instanceof BubbleSort && size > 10_000) {
+                        continue;
+                    }
+                    // Selection Sort tambem tem custo quadratico; limita o benchmark a 10.000 elementos.
+                    if (algorithm instanceof SelectionSort && size > 10_000) {
                         continue;
                     }
 
@@ -60,11 +84,23 @@ public class Main {
                         );
                         writer.write(result.toCsvRow());
                         writer.flush();
+
+                        // Mostra no terminal as mesmas metricas que continuam sendo salvas no CSV.
+                        System.out.printf(java.util.Locale.ROOT,
+                                "%-16s | %-10s | %10s | %14.3f | %16.0f | %18.0f | %10s%n",
+                                result.algorithm(),
+                                result.dataType(),
+                                String.format(java.util.Locale.ROOT, "%,d", result.size()),
+                                result.averageMilliseconds(),
+                                result.averageComparisons(),
+                                result.averageSwaps(),
+                                result.sorted() ? "SIM" : "NAO");
                     }
                 }
             }
         }
 
+        System.out.println("==============================================================================================");
         System.out.println("Resultados gravados em: " + csv.toAbsolutePath());
     }
 
